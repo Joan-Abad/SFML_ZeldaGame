@@ -3,8 +3,10 @@
 class Entity
 {
 public: 
-	Entity();
+	Entity(std::string imageAddress);
 
+	//Getters
+	sf::Sprite &getSprite() { return spr_entity; };
 private:
 
 protected: 

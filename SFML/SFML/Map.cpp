@@ -15,7 +15,6 @@ void Map::DrawRooms(sf::RenderWindow & window)
 		{
 			window.draw(roomPiece->getSprite());
 		}
-		std::cout << "Drawing\n";
 	}
 }
 

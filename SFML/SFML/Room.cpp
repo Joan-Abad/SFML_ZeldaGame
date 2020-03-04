@@ -31,18 +31,30 @@ Room::Room(std::ifstream &roomFile)
 				//Map content
 				mapContent.push_back(letter);
 
+				//Set art
 				if (letter == "#")
 				{
 					spriteAddress = "Art/Wall.jpg";
+
 				}
 				else
 				{
 					spriteAddress = "Art/Floor.jpg";
 				}
 
+				//Set new Room Piece
 				RoomPieces *roomPiece = new RoomPieces(spriteAddress);
-
 				roomPiece->getSprite().setPosition(RoomPiecePosition);
+
+				//Set room piece type
+				if (letter == "#")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Wall);
+				}
+				else
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+				}
 				
 				vecRoomPieces.push_back(roomPiece);				
 
