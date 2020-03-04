@@ -1,0 +1,68 @@
+#include "Room.h"
+#include <iostream>
+#include "GraphicsUtils.h"
+Room::Room(std::ifstream &roomFile)
+{
+	sf::Vector2f RoomPiecePosition = { 0,0 };
+	//If file opens
+	if (roomFile.is_open())
+	{
+		
+		std::string line;
+		int counterHeight = 0;
+
+		while (std::getline(roomFile, line))
+		{
+			// Get Room length
+			roomSize.RoomLength = line.length();
+
+			counterHeight++;
+
+			// Go all over the line get from the file
+			for(std::string::iterator it = line.begin(); it != line.end(); ++it)
+			{
+				//String necessary for adding to vector and register all map content
+				std::string letter; 
+				letter = *it;
+				
+				//string address for getting the art
+				std::string spriteAddress;
+
+				//Map content
+				mapContent.push_back(letter);
+
+				if (letter == "#")
+				{
+					spriteAddress = "Art/Wall.jpg";
+				}
+				else
+				{
+					spriteAddress = "Art/Floor.jpg";
+				}
+
+				RoomPieces *roomPiece = new RoomPieces(spriteAddress);
+
+				roomPiece->getSprite().setPosition(RoomPiecePosition);
+				
+				vecRoomPieces.push_back(roomPiece);				
+
+				//Move next Room piece to the right
+				RoomPiecePosition.x += 64;
+			}
+
+			//Set new lane Room piece position
+			RoomPiecePosition.y += 64;
+			RoomPiecePosition.x = 0;
+		}
+
+		// Get Room Height
+		roomSize.RoomHeight = counterHeight;
+
+		roomFile.close();
+	}
+}
+
+void Room::GenerateMap()
+{
+	
+}
