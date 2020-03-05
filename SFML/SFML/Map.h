@@ -21,6 +21,8 @@ public:
 
 	void CheckPlayerCollisions(Player &player, sf::View &view);
 
+	void RememberPlayerStuffWhenDisconect();
+
 
 private: 
 

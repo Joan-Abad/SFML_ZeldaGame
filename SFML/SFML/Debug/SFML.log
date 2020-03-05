@@ -1,3 +1,8 @@
-﻿  Map.cpp
-c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\map.cpp(202): warning C4018: '<': signed/unsigned mismatch
+﻿  SFML.cpp
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\sfml.cpp(30): warning C4244: 'argument': conversion from 'const T' to 'unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\sfml.cpp(97): warning C4018: '<': signed/unsigned mismatch
   SFML.vcxproj -> C:\Users\Joan Abad\Documents\Joan Abad\SFML\SFML\SFML_ZeldaGame\SFML\Debug\SFML.exe

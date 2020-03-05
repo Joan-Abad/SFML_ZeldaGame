@@ -183,6 +183,10 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view)
 	}
 }
 
+void Map::RememberPlayerStuffWhenDisconect()
+{
+}
+
 void Map::CreateRooms()
 {
 	int roomCounter = 0;
