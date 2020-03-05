@@ -1,2 +1,20 @@
-﻿  Room.cpp
+﻿  Map.cpp
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\map.cpp(210): warning C4018: '<': signed/unsigned mismatch
+  Player.cpp
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\player.cpp(19): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+  Room.cpp
+  SFML.cpp
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\sfml.cpp(65): warning C4018: '<': signed/unsigned mismatch
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\sfml.cpp(151): warning C4244: 'argument': conversion from 'const T' to 'unsigned int', possible loss of data
+          with
+          [
+              T=float
+          ]
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\sfml.cpp(183): warning C4129: 'N': unrecognized character escape sequence
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\sfml.cpp(203): warning C4129: 'E': unrecognized character escape sequence
+  Generating Code...
   SFML.vcxproj -> C:\Users\Joan Abad\Documents\Joan Abad\SFML\SFML\SFML_ZeldaGame\SFML\Debug\SFML.exe

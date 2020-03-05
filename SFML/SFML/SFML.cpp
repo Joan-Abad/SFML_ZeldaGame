@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include "MainMenu.h"
+#include "GraphicsUtils.h"
 
 void SaveFile(Player &ent);
 void ChecIfPlayedBefore(Player &ent, sf::View &view);
@@ -135,7 +136,13 @@ void GameLoop()
 	//Main Menu
 	MainMenu mainMenuObj(ScreenSize);
 
+	//View
 	sf::View view(sf::Vector2f((ScreenSize.x / 2) + imageSize, ScreenSize.y / 2), sf::Vector2f(ScreenSize.x, ScreenSize.y));
+
+	//Music
+	sf::SoundBuffer soundBuffer;
+	sf::Sound sound;
+	GraphicsUtils::playSound(sound,soundBuffer,"Music/MainMenu.wav",100,true);
 
 	//Create the player
 	Player ent(ScreenSize);
@@ -145,6 +152,8 @@ void GameLoop()
 
 	sf::RectangleShape rect(sf::Vector2f(10, 10));
 	rect.setFillColor(sf::Color::Transparent);
+
+	bool changeMusicMenu = false; 
 
 	//While window is open
 	while (window.isOpen())
@@ -177,6 +186,8 @@ void GameLoop()
 						ent.SetRoomId(0);
 						ent.getSprite().setPosition(ScreenSize.x / 2, ScreenSize.y / 2);
 						view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
+						//change music ingame
+						changeMusicMenu = true; 
 					}
 					if (rect.getGlobalBounds().intersects(mainMenuObj.getContinueBtn().getGlobalBounds()))
 					{
@@ -184,12 +195,15 @@ void GameLoop()
 						mainMenu = false; 
 						//Check if game was played before
 						ChecIfPlayedBefore(ent, view);
+						//change music ingame
+						changeMusicMenu = true;
 					}
 					if (rect.getGlobalBounds().intersects(mainMenuObj.getExitBtn().getGlobalBounds()))
 					{
 						std::cout << "\Exit Btn Pressed";
 						mainMenu = false;
-						//Check if game was played before
+						//stop music
+						sound.stop();
 						window.close();
 					}
 					
@@ -200,6 +214,12 @@ void GameLoop()
 			mainMenuObj.DrawMainMenu(window);
 			window.draw(rect);
 			window.display();
+		}
+
+		if (changeMusicMenu == true)
+		{
+			GraphicsUtils::playSound(sound, soundBuffer, "Music/Dungeon.wav",20,true);
+			changeMusicMenu = false; 
 		}
 
 		sf::Event event;

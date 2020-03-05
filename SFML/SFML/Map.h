@@ -3,7 +3,7 @@
 #include <map>
 #include "SFML/Graphics.hpp"
 #include "Player.h"
-
+#include "sfml/Audio.hpp"
 class Room;
 class Player;
 
@@ -28,5 +28,8 @@ private:
 
 	void CreateRooms();
 	std::map<int, Room*> rooms;
+
+	sf::Sound TransitionSound;
+	sf::SoundBuffer TransitionSoundBuffer;
 };
 

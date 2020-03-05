@@ -2,6 +2,8 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "GraphicsUtils.h"
+
 Map::Map()
 {
 	CreateRooms();
@@ -53,6 +55,8 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view)
 			{
 				int lastIdRoom = player.getRoomId();
 				player.SetRoomId(RoomPiece->getRoomId());
+
+				GraphicsUtils::playSound(TransitionSound, TransitionSoundBuffer,"Music/Transition.wav",70,false);
 
 				//MOVE TO THE CORRESPONDING ROOM
 				if (lastIdRoom == 0)
@@ -224,9 +228,4 @@ void Map::CreateRooms()
 			roomCounter++;
 		}
 	}
-
-	
-
-
-	
 }

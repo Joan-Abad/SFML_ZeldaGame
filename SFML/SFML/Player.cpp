@@ -52,11 +52,6 @@ void Player::PlayerFunctionality(sf::Event & eventPI, Map &map)
 
 	//Player Input
 	HandlePlayerInput(eventPI);
-
-	//Collisions
-	//PlayerCollisions(map);
-
-
 }
 
 void Player::drawPlayer(sf::RenderWindow & window)
@@ -174,103 +169,6 @@ void Player::PlayerFacing()
 		std::cout << "Y: " << getSprite().getPosition().y << std::endl;
 	}
 }
-
-void Player::PlayerCollisions(Map & map)
-{
-	/*
-	//TODO : DONT FOR RANGE ALL ROMS, GET THE ROOM IN THE VECTOR THE SAME ROOM YOUR PLAYER IS IN
-	PlayerWalkingDirection playerDirectionWhenColliding = PlayerWalkingDirection::Up;
-
-	//Check all rooms
-	for (auto &room : map.getRoomsOnMap())
-	{
-
-		for (int i = 0; i < room.second->vecRoomPieces.size(); i++)
-		{
-			/*if (i == 6)
-			{
-				switch (room.second->vecRoomPieces[i]->getRoomPieceType())
-				{
-				case Wall:
-					std::cout << "\nROOM PIECE TYPE IS: WALL";
-					break;
-				case Floor:
-					std::cout << "\nROOM PIECE TYPE IS: FLOOR";
-					break;
-				}				
-			}*/
-			//If Sprite stores is a wall
-
-			/*if (DebugOn == true)
-			{
-				switch (room.second->vecRoomPieces[i]->getRoomPieceType())
-				{
-				case Wall:
-					std::cout << "\nROOM " << i <<" PIECE TYPE IS: WALL";
-					break;
-				case Floor:
-					std::cout << "\nROOM " << i << " PIECE TYPE IS: FLOOR";
-					break;
-				}
-				//std::cout << "\nPIECE TYPE " << i << ": " << room.second->vecRoomPieces[i]->getRoomPieceType();
-			}
-			if (room.second->vecRoomPieces[i]->getRoomPieceType() == RoomPieceTypes::Wall)
-			{
-				//If this wall intersects with the player
-				if (spr_entity.getGlobalBounds().intersects(room.second->vecRoomPieces[i]->getSprite().getGlobalBounds()))
-				{
-					std::cout << "\nWall bro on vec " << i << ", type: " << room.second->vecRoomPieces[i]->getRoomPieceType();
-					
-					if (playerColliding == false)
-					{
-						playerDirectionWhenColliding = playerWalkingDirection;
-						playerColliding = true;
-					}
-					//if player is colliding
-					if (playerColliding == true)
-					{
-						const float fixPush = 0.5f;
-						if (playerDirectionWhenColliding == PlayerWalkingDirection::Up)
-						{
-							canMoveUp = false;
-							spr_entity.move(0, fixPush);
-						}
-						if (playerDirectionWhenColliding == PlayerWalkingDirection::Down)
-						{
-							canMoveDown = false;
-							spr_entity.move(0, -fixPush);
-						}
-						if (playerDirectionWhenColliding == PlayerWalkingDirection::Right)
-						{
-							canMoveRight = false;
-							spr_entity.move(-fixPush, 0);
-						}
-						if (playerDirectionWhenColliding == PlayerWalkingDirection::Left)
-						{
-							canMoveLeft = false;
-							spr_entity.move(fixPush, 0);
-						}
-					}
-					//end loop
-					i = room.second->vecRoomPieces.size();
-				}
-			}
-			else
-			{
-				AllowPlayerMovement();
-				playerColliding = false;
-			}
-
-
-		}
-		DebugOn = false;
-	}
-
-	*/
-
-	
-}
-
 
 void Player::AllowPlayerMovement()
 {
