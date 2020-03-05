@@ -37,7 +37,11 @@ Room::Room(std::ifstream &roomFile)
 				{
 					spriteAddress = "Art/Wall.jpg";
 				}
-				else
+				else if(letter == ".")
+				{
+					spriteAddress = "Art/Floor.jpg";
+				}
+				else if(letter == "0" || letter == "1" || letter == "2" || letter == "3" || letter == "4" || letter == "5" || letter == "6")
 				{
 					spriteAddress = "Art/Floor.jpg";
 				}
