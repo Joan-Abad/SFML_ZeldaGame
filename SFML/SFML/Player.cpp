@@ -170,7 +170,8 @@ void Player::PlayerFacing()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
 	{
-		DebugOn = true;
+		std::cout << "X: " << getSprite().getPosition().x << std::endl;
+		std::cout << "Y: " << getSprite().getPosition().y << std::endl;
 	}
 }
 

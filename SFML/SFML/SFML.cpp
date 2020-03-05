@@ -28,6 +28,7 @@ int main()
 	//While window is open
 	while (window.isOpen())
 	{
+		
 		sf::Event event;
 		while (window.pollEvent(event))
 		{

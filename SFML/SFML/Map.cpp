@@ -48,18 +48,112 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view)
 		}
 		if (RoomPiece->getRoomPieceType() == Door)
 		{
-			//CHECK IF COLLIDED WITH A WALL
+			//CHECK IF COLLIDED WITH A Door
 			if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionBot.getGlobalBounds()))
 			{
+				int lastIdRoom = player.getRoomId();
 				player.SetRoomId(RoomPiece->getRoomId());
 
+				//MOVE TO THE CORRESPONDING ROOM
+				if (lastIdRoom == 0)
+				{
+					switch (RoomPiece->getRoomId())
+					{
+					case 1:
+						player.getSprite().setPosition(987, 418);
+						break;
+					case 4:
+						player.getSprite().setPosition(103, 415);
+						break;
+					}
+				}
+				else if (lastIdRoom == 1)
+				{
+					switch (RoomPiece->getRoomId())
+					{
+					case 0:
+						player.getSprite().setPosition(103, 224);
+						break;
+					case 2:
+						player.getSprite().setPosition(730, 478);
+						break;
+					case 3:
+						player.getSprite().setPosition(104, 352);
+						break;
+					}
+				}
+				else if (lastIdRoom == 2)
+				{
+					switch (RoomPiece->getRoomId())
+					{
+					case 1:
+						player.getSprite().setPosition(863, 101);
+						break;
+					case 3:
+						player.getSprite().setPosition(90, 94);
+						break;
+					}
+				}
+				else if (lastIdRoom == 3)
+				{
+					switch (RoomPiece->getRoomId())
+					{
+					case 1:
+						player.getSprite().setPosition(983, 227);
+						break;
+					case 2:
+						player.getSprite().setPosition(927, 166);
+						break;
+					case 4:
+						player.getSprite().setPosition(806, 100);
+						break;
+					}
+				}
+				else if (lastIdRoom == 4)
+				{
+					switch (RoomPiece->getRoomId())
+					{
+					case 0:
+						player.getSprite().setPosition(985, 158);
+						break;
+					case 3:
+						player.getSprite().setPosition(803, 480);
+						break;
+					case 5:
+						player.getSprite().setPosition(739, 98);
+						break;
+					}
+				}
+				else if (lastIdRoom == 5)
+				{
+					switch (RoomPiece->getRoomId())
+					{
+					case 4:
+						player.getSprite().setPosition(793, 536);
+						break;
+					case 6:
+						player.getSprite().setPosition(100, 224);
+						break;
+					}
+				}
+				else if (lastIdRoom == 6)
+				{
+					if (player.getRoomId() == 5)
+					{
+						player.getSprite().setPosition(928, 285);
+					}
+				}
+				
+				//MOVE CAMERA IF NEEDED
+				//MOVE TO THE CORRESPONDING ROOM
 				if (player.getRoomId() == 0)
 				{
-					view.setCenter(ScreenSize.x/2 + imageSize, ScreenSize.y/2);
+					view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
 				}
 				else if (player.getRoomId() == 1)
 				{
-					view.setCenter(ScreenSize.x/2 + imageSize, ScreenSize.y/2 + imageSize);
+					view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2 + imageSize);
+
 				}
 				else if (player.getRoomId() == 2)
 				{
@@ -81,7 +175,9 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view)
 				{
 					view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
 				}
-				player.getSprite().setPosition(250,250);
+
+				//player.getSprite().setPosition(250, 250);
+				
 			}
 		}
 	}

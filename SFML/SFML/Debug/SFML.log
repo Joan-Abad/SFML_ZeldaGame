@@ -1,3 +1,3 @@
 ﻿  Map.cpp
-c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\map.cpp(106): warning C4018: '<': signed/unsigned mismatch
+c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\map.cpp(202): warning C4018: '<': signed/unsigned mismatch
   SFML.vcxproj -> C:\Users\Joan Abad\Documents\Joan Abad\SFML\SFML\SFML_ZeldaGame\SFML\Debug\SFML.exe
