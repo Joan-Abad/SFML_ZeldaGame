@@ -6,6 +6,7 @@ enum RoomPieceTypes
 	Wall, 
 	Floor, 
 	Enemy, 
+	Door,
 	none
 };
 
@@ -19,6 +20,8 @@ public:
 	sf::Sprite &getSprite() { return spr_RoomPiece; };
 	sf::Texture &getTexture() { return tex_RoomPiece; };
 	RoomPieceTypes &getRoomPieceType (){ return roomPieceType; };
+
+	int &getRoomId() { return idRoom; };
 
 	//setters
 	void setRoomPieceType(RoomPieceTypes roomPieceType);

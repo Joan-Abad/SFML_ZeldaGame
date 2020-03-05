@@ -84,5 +84,23 @@
     <Text Include="room_00.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
+    <Text Include="room_01.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="room_02.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="room_03.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="room_04.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="room_05.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="room_06.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
   </ItemGroup>
 </Project>

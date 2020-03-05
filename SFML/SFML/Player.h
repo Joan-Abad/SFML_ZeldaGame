@@ -37,6 +37,7 @@ public:
 
 	void drawPlayer(sf::RenderWindow &window);
 	void MovePlayerCollisions();
+	void SetRoomId(const int NewId);
 
 private:
 

@@ -19,7 +19,7 @@ public:
 	//Getters
 	std::map<int, Room*> &getRoomsOnMap() { return rooms; };
 
-	void CheckPlayerCollisions(Player &player);
+	void CheckPlayerCollisions(Player &player, sf::View &view);
 
 
 private: 

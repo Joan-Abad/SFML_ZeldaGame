@@ -16,31 +16,73 @@ void Map::DrawRooms(sf::RenderWindow & window,Player &player)
 	}
 }
 
-void Map::CheckPlayerCollisions(Player & player)
+void Map::CheckPlayerCollisions(Player & player, sf::View &view)
 {
 	auto roomPlayerIsIn = rooms.at(player.getRoomId());
 
+	//Initialize screen variables
+	const int imageSize = 64;
+	const sf::Vector2f ScreenSize = { imageSize * 15, imageSize * 8 };
+
 	for (auto RoomPiece : roomPlayerIsIn->vecRoomPieces)
 	{
-		if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionLeft.getGlobalBounds()) && RoomPiece->getRoomPieceType() == Wall)
+		if( RoomPiece->getRoomPieceType() == Wall)
 		{
-			player.canMoveLeft = false;
-			std::cout << "\nToching Wall";
+			//IF COLIDES WITH WALL, CHECK WHICH PART COLLIDED
+			if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionLeft.getGlobalBounds()))
+			{
+				player.canMoveLeft = false;
+			}
+			if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionRight.getGlobalBounds()))
+			{
+				player.canMoveRight = false;
+			}
+			if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionTop.getGlobalBounds()))
+			{
+				player.canMoveUp = false;
+			}
+			if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionBot.getGlobalBounds()))
+			{
+				player.canMoveDown = false;
+			}
 		}
-		if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionRight.getGlobalBounds()) && RoomPiece->getRoomPieceType() == Wall)
+		if (RoomPiece->getRoomPieceType() == Door)
 		{
-			player.canMoveRight = false;
-			std::cout << "\nToching Wall";
-		}
-		if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionTop.getGlobalBounds()) && RoomPiece->getRoomPieceType() == Wall)
-		{
-			player.canMoveUp = false;
-			std::cout << "\nToching Wall";
-		}
-		if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionBot.getGlobalBounds()) && RoomPiece->getRoomPieceType() == Wall)
-		{
-			player.canMoveDown = false;
-			std::cout << "\nToching Wall";
+			//CHECK IF COLLIDED WITH A WALL
+			if (RoomPiece->getSprite().getGlobalBounds().intersects(player.rectCollisionBot.getGlobalBounds()))
+			{
+				player.SetRoomId(RoomPiece->getRoomId());
+
+				if (player.getRoomId() == 0)
+				{
+					view.setCenter(ScreenSize.x/2 + imageSize, ScreenSize.y/2);
+				}
+				else if (player.getRoomId() == 1)
+				{
+					view.setCenter(ScreenSize.x/2 + imageSize, ScreenSize.y/2 + imageSize);
+				}
+				else if (player.getRoomId() == 2)
+				{
+					view.setCenter(ScreenSize.x / 2, ScreenSize.y / 2);
+				}
+				else if (player.getRoomId() == 3)
+				{
+					view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
+				}
+				else if (player.getRoomId() == 4)
+				{
+					view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2 + imageSize);
+				}
+				else if (player.getRoomId() == 5)
+				{
+					view.setCenter(ScreenSize.x / 2, ScreenSize.y / 2 + imageSize);
+				}
+				else if (player.getRoomId() == 6)
+				{
+					view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
+				}
+				player.getSprite().setPosition(250,250);
+			}
 		}
 	}
 }
@@ -49,7 +91,7 @@ void Map::CreateRooms()
 {
 	int roomCounter = 0;
 	std::vector<std::string> roomsToRead;
-	const int NumberOfRooms = 2;
+	const int NumberOfRooms = 7;
 
 	//Create all the texts for opening the files
 	for (int i = 0; i < NumberOfRooms; i++)

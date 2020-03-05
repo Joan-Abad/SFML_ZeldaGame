@@ -12,7 +12,7 @@ Player::Player(const sf::Vector2f windowSize) : Entity("Art/Soldier.png")
 	id_RoomPlayerIs = 0;
 
 	//Entity Speed
-	speed = 0.1f;
+	speed = 0.2f;
 
 	//Rotation Stuff
 	spr_entity.setRotation(-90.f);
@@ -81,6 +81,11 @@ void Player::MovePlayerCollisions()
 
 	// RIGHT
 	rectCollisionRight.setPosition((spr_entity.getPosition().x + GraphicsUtils::spriteSize(spr_entity).x / 2) - rectCollisionLeft.getSize().x * 2, spr_entity.getPosition().y - GraphicsUtils::spriteSize(spr_entity).y / 4);
+}
+
+void Player::SetRoomId(const int NewId)
+{
+	id_RoomPlayerIs = NewId;
 }
 
 void Player::HandlePlayerInput(sf::Event & eventPI)

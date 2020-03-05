@@ -53,39 +53,46 @@ Room::Room(std::ifstream &roomFile)
 				}
 				else if (letter == "0")
 				{
-					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+					roomPiece->setRoomId(0);
+					roomPiece->setRoomPieceType(RoomPieceTypes::Door);
 				}
 				else if(letter == "1")
 				{
-					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+					roomPiece->setRoomId(1);
+					roomPiece->setRoomPieceType(RoomPieceTypes::Door);
 				}
 				else if (letter == "2")
 				{
-					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
-
+					roomPiece->setRoomPieceType(RoomPieceTypes::Door);
+					roomPiece->setRoomId(2);
 				}
 				else if (letter == "3")
 				{
-					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
-
+					roomPiece->setRoomPieceType(RoomPieceTypes::Door);
+					roomPiece->setRoomId(3);
 				}
 				else if (letter == "4")
 				{
-					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+					roomPiece->setRoomPieceType(RoomPieceTypes::Door);
+					roomPiece->setRoomId(4);
 				}
 				else if (letter == "5")
 				{
-					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
-
+					roomPiece->setRoomPieceType(RoomPieceTypes::Door);
+					roomPiece->setRoomId(5);
 				}
 				else if (letter == "6")
 				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Door);
+					roomPiece->setRoomId(6);
+				}
+				else if (letter == ".")
+				{
 					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
-
 				}
 				else
 				{
-					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+					roomPiece->setRoomPieceType(RoomPieceTypes::none);
 				}
 				
 				vecRoomPieces.push_back(roomPiece);	

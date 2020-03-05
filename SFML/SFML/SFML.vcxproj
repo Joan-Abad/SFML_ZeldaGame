@@ -181,6 +181,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="room_00.txt" />
+    <Text Include="room_01.txt" />
+    <Text Include="room_02.txt" />
+    <Text Include="room_03.txt" />
+    <Text Include="room_04.txt" />
+    <Text Include="room_05.txt" />
+    <Text Include="room_06.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
