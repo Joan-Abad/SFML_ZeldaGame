@@ -1,8 +1,1 @@
-﻿  Player.cpp
-c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\player.cpp(17): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
-          with
-          [
-              T=unsigned int
-          ]
-c:\users\joan abad\documents\joan abad\sfml\sfml\sfml_zeldagame\sfml\sfml\player.cpp(125): warning C4018: '<': signed/unsigned mismatch
-  SFML.vcxproj -> C:\Users\Joan Abad\Documents\Joan Abad\SFML\SFML\SFML_ZeldaGame\SFML\Debug\SFML.exe
+﻿  SFML.vcxproj -> C:\Users\Joan Abad\Documents\Joan Abad\SFML\SFML\SFML_ZeldaGame\SFML\Debug\SFML.exe

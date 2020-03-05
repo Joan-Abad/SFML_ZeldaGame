@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GraphicsUtils.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GraphicsUtils.h" />
     <ClInclude Include="Map.h" />
@@ -176,6 +178,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SFML.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="room_00.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

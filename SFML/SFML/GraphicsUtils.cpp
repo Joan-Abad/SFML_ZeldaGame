@@ -12,3 +12,8 @@ sf::Texture & GraphicsUtils::InitializeSprite(sf::Texture & texture, const std::
 	}
 	return texture;
 }
+
+const sf::Vector2f GraphicsUtils::spriteSize(sf::Sprite & sprite)
+{
+	return { sprite.getTexture()->getSize().x * sprite.getScale().x,sprite.getTexture()->getSize().y * sprite.getScale().y };
+}

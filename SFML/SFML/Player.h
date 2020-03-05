@@ -3,6 +3,8 @@
 #include "SFML/Graphics.hpp"
 #include "Map.h"
 
+class Map;
+
 enum PlayerWalkingDirection
 {
 	Up,
@@ -14,25 +16,39 @@ enum PlayerWalkingDirection
 class Player : public Entity
 {
 public:
-	Player();
+	Player(const sf::Vector2f windowSize);
 
 	void PlayerFunctionality(sf::Event &eventPI, Map &map);
+
+	//Getters
+	int getRoomId() { return id_RoomPlayerIs; };
+
+	//Collision
+	sf::RectangleShape rectCollisionLeft;
+	sf::RectangleShape rectCollisionRight;
+	sf::RectangleShape rectCollisionBot;
+	sf::RectangleShape rectCollisionTop;
+
+	//Movement
+	bool canMoveUp;
+	bool canMoveDown;
+	bool canMoveRight;
+	bool canMoveLeft;
+
+	void drawPlayer(sf::RenderWindow &window);
+	void MovePlayerCollisions();
 
 private:
 
 	//Rooms / Map
-	int RoomPlayerIs;
+	int id_RoomPlayerIs;
 
 	//Player Input
 	void HandlePlayerInput(sf::Event &eventPI);
 	void PlayerMovement();
 	void PlayerFacing();
-
-	bool canMoveUp;
-	bool canMoveDown;
-	bool canMoveRight;
-	bool canMoveLeft;
 	
+	bool DebugOn = false;
 
 	//Collisions
 	void PlayerCollisions(Map &map);
@@ -41,5 +57,6 @@ private:
 
 	//Rotation
 	PlayerWalkingDirection playerWalkingDirection;
+
 };
 

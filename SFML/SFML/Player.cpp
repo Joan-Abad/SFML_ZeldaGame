@@ -3,11 +3,13 @@
 #include <vector>
 #include "RoomPiece.h"
 #include "Room.h"
-Player::Player() : Entity("Art/Soldier.png")
+#include "GraphicsUtils.h"
+
+Player::Player(const sf::Vector2f windowSize) : Entity("Art/Soldier.png")
 {
 	// TODO : REMEMBER PLAYER ROOM IS AFTER CLOSING GAME AND POSITION
 	//Player Room 
-	RoomPlayerIs = 0;
+	id_RoomPlayerIs = 0;
 
 	//Entity Speed
 	speed = 0.1f;
@@ -22,15 +24,63 @@ Player::Player() : Entity("Art/Soldier.png")
 	canMoveLeft = true;
 	canMoveDown = true;
 	canMoveRight = true;
+
+	//Transform
+	spr_entity.setScale(0.7f, 0.7f);
+	spr_entity.setPosition(windowSize.x / 2, windowSize.y / 2);
+	
+	//Set collisions size
+	sf::Vector2f rectCollisionSizeLeft = { GraphicsUtils::spriteSize(spr_entity).x / 10.f, GraphicsUtils::spriteSize(spr_entity).y/2 };
+	sf::Vector2f rectCollisionSizeTop = { GraphicsUtils::spriteSize(spr_entity).x/2, GraphicsUtils::spriteSize(spr_entity).y/10.f };
+	
+	rectCollisionBot.setSize(rectCollisionSizeTop);
+	rectCollisionLeft.setSize(rectCollisionSizeLeft);
+	rectCollisionRight.setSize(rectCollisionSizeLeft);
+	rectCollisionTop.setSize(rectCollisionSizeTop);
+
+	//HIDE Rectangle collisions
+	rectCollisionTop.setFillColor(sf::Color(0, 0, 0, 0));
+	rectCollisionBot.setFillColor(sf::Color(0, 0, 0, 0));
+	rectCollisionRight.setFillColor(sf::Color(0, 0, 0, 0));
+	rectCollisionLeft.setFillColor(sf::Color(0, 0, 0, 0));
+
 }
 
 void Player::PlayerFunctionality(sf::Event & eventPI, Map &map)
 {
+	MovePlayerCollisions();
+
 	//Player Input
 	HandlePlayerInput(eventPI);
 
 	//Collisions
-	PlayerCollisions(map);
+	//PlayerCollisions(map);
+
+
+}
+
+void Player::drawPlayer(sf::RenderWindow & window)
+{
+	window.draw(spr_entity);
+	window.draw(rectCollisionBot);
+	window.draw(rectCollisionLeft);
+	window.draw(rectCollisionRight);
+	window.draw(rectCollisionTop);
+}
+
+void Player::MovePlayerCollisions()
+{
+	// TOP
+	rectCollisionTop.setPosition(spr_entity.getPosition().x - (GraphicsUtils::spriteSize(spr_entity).x / 5), (spr_entity.getPosition().y - GraphicsUtils::spriteSize(spr_entity).y / 2) + rectCollisionTop.getSize().y/2 );
+
+	// BOT
+	rectCollisionBot.setPosition(spr_entity.getPosition().x - (GraphicsUtils::spriteSize(spr_entity).x / 5), (spr_entity.getPosition().y + GraphicsUtils::spriteSize(spr_entity).y / 2) - rectCollisionTop.getSize().y*2);
+
+	// LEFT
+	rectCollisionLeft.setPosition((spr_entity.getPosition().x - GraphicsUtils::spriteSize(spr_entity).x / 2) + rectCollisionLeft.getSize().x * 2, spr_entity.getPosition().y - GraphicsUtils::spriteSize(spr_entity).y / 4);
+
+	// RIGHT
+	rectCollisionRight.setPosition((spr_entity.getPosition().x + GraphicsUtils::spriteSize(spr_entity).x / 2) - rectCollisionLeft.getSize().x * 2, spr_entity.getPosition().y - GraphicsUtils::spriteSize(spr_entity).y / 4);
 }
 
 void Player::HandlePlayerInput(sf::Event & eventPI)
@@ -57,7 +107,7 @@ void Player::PlayerMovement()
 	}
 
 	//Move Right
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		if (canMoveRight == true)
 		{
@@ -68,7 +118,7 @@ void Player::PlayerMovement()
 	}
 
 	//Move Up
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		if (canMoveUp == true)
 		{
@@ -79,7 +129,7 @@ void Player::PlayerMovement()
 	}
 
 	//Move Down
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		if (canMoveDown == true)
 		{
@@ -88,8 +138,6 @@ void Player::PlayerMovement()
 			AllowPlayerMovement();
 		}
 	}
-
-	
 
 }
 
@@ -111,25 +159,62 @@ void Player::PlayerFacing()
 	{
 		spr_entity.setRotation(180.f);
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+	{
+		system("cls");
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+	{
+		DebugOn = true;
+	}
 }
 
 void Player::PlayerCollisions(Map & map)
 {
+	/*
 	//TODO : DONT FOR RANGE ALL ROMS, GET THE ROOM IN THE VECTOR THE SAME ROOM YOUR PLAYER IS IN
 	PlayerWalkingDirection playerDirectionWhenColliding = PlayerWalkingDirection::Up;
 
 	//Check all rooms
-	for (auto room : map.getRoomsOnMap())
+	for (auto &room : map.getRoomsOnMap())
 	{
 
-		for (int i = 0; i < room.second->vecRoomPieces.size(); ++i)
+		for (int i = 0; i < room.second->vecRoomPieces.size(); i++)
 		{
+			/*if (i == 6)
+			{
+				switch (room.second->vecRoomPieces[i]->getRoomPieceType())
+				{
+				case Wall:
+					std::cout << "\nROOM PIECE TYPE IS: WALL";
+					break;
+				case Floor:
+					std::cout << "\nROOM PIECE TYPE IS: FLOOR";
+					break;
+				}				
+			}*/
 			//If Sprite stores is a wall
+
+			/*if (DebugOn == true)
+			{
+				switch (room.second->vecRoomPieces[i]->getRoomPieceType())
+				{
+				case Wall:
+					std::cout << "\nROOM " << i <<" PIECE TYPE IS: WALL";
+					break;
+				case Floor:
+					std::cout << "\nROOM " << i << " PIECE TYPE IS: FLOOR";
+					break;
+				}
+				//std::cout << "\nPIECE TYPE " << i << ": " << room.second->vecRoomPieces[i]->getRoomPieceType();
+			}
 			if (room.second->vecRoomPieces[i]->getRoomPieceType() == RoomPieceTypes::Wall)
 			{
 				//If this wall intersects with the player
 				if (spr_entity.getGlobalBounds().intersects(room.second->vecRoomPieces[i]->getSprite().getGlobalBounds()))
 				{
+					std::cout << "\nWall bro on vec " << i << ", type: " << room.second->vecRoomPieces[i]->getRoomPieceType();
+					
 					if (playerColliding == false)
 					{
 						playerDirectionWhenColliding = playerWalkingDirection;
@@ -160,6 +245,7 @@ void Player::PlayerCollisions(Map & map)
 							spr_entity.move(fixPush, 0);
 						}
 					}
+					//end loop
 					i = room.second->vecRoomPieces.size();
 				}
 			}
@@ -171,8 +257,12 @@ void Player::PlayerCollisions(Map & map)
 
 
 		}
-
+		DebugOn = false;
 	}
+
+	*/
+
+	
 }
 
 

@@ -22,6 +22,7 @@ public:
 
 	//setters
 	void setRoomPieceType(RoomPieceTypes roomPieceType);
+	void setRoomId(int newIDRoom);
 
 private: 
 
@@ -31,5 +32,8 @@ private:
 
 	//Type
 	RoomPieceTypes roomPieceType; 
+	
+	//-1 means it doesn't move you to another room
+	int idRoom = -1; 
 };
 

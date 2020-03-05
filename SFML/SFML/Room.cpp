@@ -11,6 +11,7 @@ Room::Room(std::ifstream &roomFile)
 		std::string line;
 		int counterHeight = 0;
 
+		//read file
 		while (std::getline(roomFile, line))
 		{
 			// Get Room length
@@ -35,7 +36,6 @@ Room::Room(std::ifstream &roomFile)
 				if (letter == "#")
 				{
 					spriteAddress = "Art/Wall.jpg";
-
 				}
 				else
 				{
@@ -51,12 +51,45 @@ Room::Room(std::ifstream &roomFile)
 				{
 					roomPiece->setRoomPieceType(RoomPieceTypes::Wall);
 				}
+				else if (letter == "0")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+				}
+				else if(letter == "1")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+				}
+				else if (letter == "2")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+
+				}
+				else if (letter == "3")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+
+				}
+				else if (letter == "4")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+				}
+				else if (letter == "5")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+
+				}
+				else if (letter == "6")
+				{
+					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
+
+				}
 				else
 				{
 					roomPiece->setRoomPieceType(RoomPieceTypes::Floor);
 				}
 				
-				vecRoomPieces.push_back(roomPiece);				
+				vecRoomPieces.push_back(roomPiece);	
+				
 
 				//Move next Room piece to the right
 				RoomPiecePosition.x += 64;

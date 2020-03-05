@@ -10,3 +10,8 @@ void RoomPieces::setRoomPieceType(RoomPieceTypes roomPieceType)
 {
 	this->roomPieceType = roomPieceType;
 }
+//-1 means no room to tp
+void RoomPieces::setRoomId(int newIDRoom)
+{
+	idRoom = newIDRoom;
+}
