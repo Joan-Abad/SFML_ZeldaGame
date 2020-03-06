@@ -12,7 +12,7 @@ Player::Player(const sf::Vector2f windowSize) : Entity("Art/Soldier.png")
 	id_RoomPlayerIs = 0;
 
 	//Entity Speed
-	speed = 0.2f;
+	speed = 0.4f;
 
 	//Rotation Stuff
 	spr_entity.setRotation(-90.f);

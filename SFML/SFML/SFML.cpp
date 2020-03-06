@@ -8,6 +8,8 @@
 #include <iostream>
 #include "MainMenu.h"
 #include "GraphicsUtils.h"
+#include "VictoryItem.h"
+#include "VictoryScreen.h"
 
 void SaveFile(Player &ent);
 void ChecIfPlayedBefore(Player &ent, sf::View &view);
@@ -133,8 +135,10 @@ void GameLoop()
 	bool mainMenu = true; 
 	bool newGame = false; 
 	bool continueGame = false; 
-	//Main Menu
+	
+	//UI STUFF
 	MainMenu mainMenuObj(ScreenSize);
+	VictoryScreen victorySreen(ScreenSize);
 
 	//View
 	sf::View view(sf::Vector2f((ScreenSize.x / 2) + imageSize, ScreenSize.y / 2), sf::Vector2f(ScreenSize.x, ScreenSize.y));
@@ -142,10 +146,13 @@ void GameLoop()
 	//Music
 	sf::SoundBuffer soundBuffer;
 	sf::Sound sound;
-	GraphicsUtils::playSound(sound,soundBuffer,"Music/MainMenu.wav",100,true);
+	GraphicsUtils::playSound(sound,soundBuffer,"Music/MainMenu.wav",50,true);
 
 	//Create the player
 	Player ent(ScreenSize);
+
+	//Create Winning Item
+	VictoryItem victoryItem(ScreenSize);
 
 	//Create the window
 	sf::RenderWindow window(sf::VideoMode(ScreenSize.x, ScreenSize.y), "SFML Game!");
@@ -158,6 +165,7 @@ void GameLoop()
 	//While window is open
 	while (window.isOpen())
 	{
+
 		//MAIN MENU
 		while (mainMenu == true)
 		{
@@ -236,13 +244,47 @@ void GameLoop()
 		//Player functionality
 		ent.PlayerFunctionality(event, map);
 
-		map.CheckPlayerCollisions(ent, view);
+		map.CheckPlayerCollisions(ent, view,victoryItem);
 
 		//Window draw stuff
 		window.clear();
 		map.DrawRooms(window, ent);
 		window.setView(view);
+		//If have the same id
+		if (ent.getRoomId() == victoryItem.getRoomSpawnedId())
+		{
+			window.draw(victoryItem.getSprite());
+		}
 		ent.drawPlayer(window);
 		window.display();
+
+
+		while (ent.PlayerWonTheGame == true)
+		{
+			sf::Event event;
+			sf::View view(sf::Vector2f(ScreenSize.x/2, ScreenSize.y/2), sf::Vector2f(ScreenSize.x, ScreenSize.y));
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+				{
+					SaveFile(ent);
+					ent.PlayerWonTheGame = false;
+					window.close();
+					
+				}
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+				{
+					ent.PlayerWonTheGame = false;
+					SaveFile(ent);
+					mainMenu = true; 
+				}
+			}
+
+			window.setView(view);
+			window.clear();
+			victorySreen.DrawVictoryScreen(window);
+			
+			window.display();
+		}
 	}
 }

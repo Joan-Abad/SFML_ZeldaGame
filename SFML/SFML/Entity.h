@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+
 class Entity
 {
 public: 
@@ -7,6 +8,9 @@ public:
 
 	//Getters
 	sf::Sprite &getSprite() { return spr_entity; };
+
+	int &getRoomSpawnedId() { return roomSpawned; };
+
 private:
 
 protected: 
@@ -18,5 +22,9 @@ protected:
 	//Initi values
 	float speed; 
 	bool alive;
+
+	int roomSpawned;
+
+
 };
 

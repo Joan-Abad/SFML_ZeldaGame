@@ -3,7 +3,9 @@
 #include <map>
 #include "SFML/Graphics.hpp"
 #include "Player.h"
-#include "sfml/Audio.hpp"
+#include "SFML/Audio.hpp"
+#include "VictoryItem.h"
+
 class Room;
 class Player;
 
@@ -19,10 +21,7 @@ public:
 	//Getters
 	std::map<int, Room*> &getRoomsOnMap() { return rooms; };
 
-	void CheckPlayerCollisions(Player &player, sf::View &view);
-
-	void RememberPlayerStuffWhenDisconect();
-
+	void CheckPlayerCollisions(Player &player, sf::View &view, VictoryItem & VI);
 
 private: 
 

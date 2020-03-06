@@ -166,6 +166,8 @@
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="RoomPiece.cpp" />
     <ClCompile Include="SFML.cpp" />
+    <ClCompile Include="VictoryItem.cpp" />
+    <ClCompile Include="VictoryScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -177,6 +179,8 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="RoomPiece.h" />
+    <ClInclude Include="VictoryItem.h" />
+    <ClInclude Include="VictoryScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SFML.rc" />

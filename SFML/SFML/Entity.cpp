@@ -5,3 +5,5 @@ Entity::Entity(std::string imageAddress)
 {
 	spr_entity.setTexture(GraphicsUtils::InitializeSprite(tex_entity, imageAddress));
 }
+
+

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include "GraphicsUtils.h"
+#include "Entity.h"
 
 Map::Map()
 {
@@ -18,7 +19,7 @@ void Map::DrawRooms(sf::RenderWindow & window,Player &player)
 	}
 }
 
-void Map::CheckPlayerCollisions(Player & player, sf::View &view)
+void Map::CheckPlayerCollisions(Player & player, sf::View &view, VictoryItem & VI)
 {
 	auto roomPlayerIsIn = rooms.at(player.getRoomId());
 
@@ -26,6 +27,7 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view)
 	const int imageSize = 64;
 	const sf::Vector2f ScreenSize = { imageSize * 15, imageSize * 8 };
 
+	//Check all RoomPieces
 	for (auto RoomPiece : roomPlayerIsIn->vecRoomPieces)
 	{
 		if( RoomPiece->getRoomPieceType() == Wall)
@@ -185,10 +187,11 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view)
 			}
 		}
 	}
-}
 
-void Map::RememberPlayerStuffWhenDisconect()
-{
+	if (player.getSprite().getGlobalBounds().intersects(VI.getSprite().getGlobalBounds()) && player.getRoomId() == VI.getRoomSpawnedId())
+	{
+		player.PlayerWonTheGame = true; 
+	}
 }
 
 void Map::CreateRooms()

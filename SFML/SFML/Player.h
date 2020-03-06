@@ -34,6 +34,7 @@ public:
 	bool canMoveDown;
 	bool canMoveRight;
 	bool canMoveLeft;
+	bool PlayerWonTheGame = false;
 
 	void drawPlayer(sf::RenderWindow &window);
 	void MovePlayerCollisions();
