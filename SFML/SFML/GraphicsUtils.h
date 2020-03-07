@@ -7,5 +7,6 @@ public:
 	static sf::Texture & InitializeSprite(sf::Texture &texture, const std::string &textureAddress);
 	static const sf::Vector2f spriteSize(sf::Sprite &sprite);
 	static void playSound(sf::Sound & sound, sf::SoundBuffer & SoundBuffer, const std::string SoundAddress, float volume, bool loop);
+	static void PrintVector2f(sf::Vector2f Vector2);
 };
 

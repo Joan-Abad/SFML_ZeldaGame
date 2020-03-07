@@ -12,7 +12,7 @@ Player::Player(const sf::Vector2f windowSize) : Entity("Art/Soldier.png")
 	id_RoomPlayerIs = 0;
 
 	//Entity Speed
-	speed = 0.4f;
+	speed = 0.3f;
 
 	//Rotation Stuff
 	spr_entity.setRotation(-90.f);
@@ -27,7 +27,7 @@ Player::Player(const sf::Vector2f windowSize) : Entity("Art/Soldier.png")
 
 	//Transform
 	spr_entity.setScale(0.7f, 0.7f);
-	spr_entity.setPosition(windowSize.x / 2, windowSize.y / 2);
+	spr_entity.setPosition(windowSize.x /1.8, windowSize.y / 1.4);
 	
 	//Set collisions size
 	sf::Vector2f rectCollisionSizeLeft = { GraphicsUtils::spriteSize(spr_entity).x / 10.f, GraphicsUtils::spriteSize(spr_entity).y/2 };
@@ -43,6 +43,8 @@ Player::Player(const sf::Vector2f windowSize) : Entity("Art/Soldier.png")
 	rectCollisionBot.setFillColor(sf::Color(0, 0, 0, 0));
 	rectCollisionRight.setFillColor(sf::Color(0, 0, 0, 0));
 	rectCollisionLeft.setFillColor(sf::Color(0, 0, 0, 0));
+
+	lifes = 3; 
 
 }
 
@@ -165,8 +167,7 @@ void Player::PlayerFacing()
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
 	{
-		std::cout << "X: " << getSprite().getPosition().x << std::endl;
-		std::cout << "Y: " << getSprite().getPosition().y << std::endl;
+		GraphicsUtils::PrintVector2f(spr_entity.getPosition());
 	}
 }
 

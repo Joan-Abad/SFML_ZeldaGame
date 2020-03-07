@@ -19,7 +19,7 @@ void Map::DrawRooms(sf::RenderWindow & window,Player &player)
 	}
 }
 
-void Map::CheckPlayerCollisions(Player & player, sf::View &view, VictoryItem & VI)
+void Map::CheckPlayerCollisions(Player & player, sf::View &view, VictoryItem & VI, E_GameState &gameState)
 {
 	auto roomPlayerIsIn = rooms.at(player.getRoomId());
 
@@ -81,7 +81,7 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view, VictoryItem & V
 						player.getSprite().setPosition(103, 224);
 						break;
 					case 2:
-						player.getSprite().setPosition(730, 478);
+						player.getSprite().setPosition(220, 478);
 						break;
 					case 3:
 						player.getSprite().setPosition(104, 352);
@@ -93,7 +93,7 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view, VictoryItem & V
 					switch (RoomPiece->getRoomId())
 					{
 					case 1:
-						player.getSprite().setPosition(863, 101);
+						player.getSprite().setPosition(226, 108);
 						break;
 					case 3:
 						player.getSprite().setPosition(90, 94);
@@ -126,7 +126,7 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view, VictoryItem & V
 						player.getSprite().setPosition(803, 480);
 						break;
 					case 5:
-						player.getSprite().setPosition(739, 98);
+						player.getSprite().setPosition(160, 98);
 						break;
 					}
 				}
@@ -180,18 +180,19 @@ void Map::CheckPlayerCollisions(Player & player, sf::View &view, VictoryItem & V
 				else if (player.getRoomId() == 6)
 				{
 					view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
-				}
-
-				//player.getSprite().setPosition(250, 250);
-				
+				}				
 			}
 		}
 	}
 
 	if (player.getSprite().getGlobalBounds().intersects(VI.getSprite().getGlobalBounds()) && player.getRoomId() == VI.getRoomSpawnedId())
 	{
-		player.PlayerWonTheGame = true; 
+		gameState = E_Victory;
 	}
+}
+
+void Map::CheckAICollision(std::vector<Entity> &AIOnRoom, Player &player)
+{
 }
 
 void Map::CreateRooms()

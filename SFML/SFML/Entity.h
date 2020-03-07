@@ -5,11 +5,11 @@ class Entity
 {
 public: 
 	Entity(std::string imageAddress);
-
+	
 	//Getters
 	sf::Sprite &getSprite() { return spr_entity; };
-
 	int &getRoomSpawnedId() { return roomSpawned; };
+	int &getLifes() { return lifes; };
 
 private:
 
@@ -21,9 +21,12 @@ protected:
 
 	//Initi values
 	float speed; 
+	float VerticalSpeed;
+	float HorizontalSpeed;
 	bool alive;
 
 	int roomSpawned;
+	int lifes; 
 
 
 };

@@ -40,6 +40,7 @@ public:
 	void MovePlayerCollisions();
 	void SetRoomId(const int NewId);
 
+
 private:
 
 	//Rooms / Map

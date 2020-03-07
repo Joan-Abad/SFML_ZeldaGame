@@ -5,9 +5,11 @@
 #include "Player.h"
 #include "SFML/Audio.hpp"
 #include "VictoryItem.h"
+#include "GlobalVariables.h"
 
 class Room;
 class Player;
+
 
 class Map
 {
@@ -21,12 +23,14 @@ public:
 	//Getters
 	std::map<int, Room*> &getRoomsOnMap() { return rooms; };
 
-	void CheckPlayerCollisions(Player &player, sf::View &view, VictoryItem & VI);
+	void CheckPlayerCollisions(Player &player, sf::View &view, VictoryItem & VI, E_GameState &gameState);
+	std::map<int, Room*> rooms;
+
+	void CheckAICollision(std::vector<Entity> &AIOnRoom, Player &player);
 
 private: 
 
 	void CreateRooms();
-	std::map<int, Room*> rooms;
 
 	sf::Sound TransitionSound;
 	sf::SoundBuffer TransitionSoundBuffer;

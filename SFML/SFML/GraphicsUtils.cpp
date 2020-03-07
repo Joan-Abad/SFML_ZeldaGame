@@ -31,3 +31,9 @@ void GraphicsUtils::playSound(sf::Sound & sound, sf::SoundBuffer & SoundBuffer, 
 	sound.play();
 }
 
+void GraphicsUtils::PrintVector2f(sf::Vector2f Vector2)
+{
+	std::cout << "\nX: " << Vector2.x;
+	std::cout << "\nY: " << Vector2.y;
+}
+

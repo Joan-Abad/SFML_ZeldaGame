@@ -2,154 +2,63 @@
 #include "Player.h"
 #include "Map.h"
 #include <iostream>
-#include "Entity.h"
-#include "Bullet.h"
 #include <fstream>
 #include <iostream>
 #include "MainMenu.h"
 #include "GraphicsUtils.h"
 #include "VictoryItem.h"
 #include "VictoryScreen.h"
+#include "SavingSystem.h"
+#include "Enemy_BluePig.h"
 
-void SaveFile(Player &ent);
-void ChecIfPlayedBefore(Player &ent, sf::View &view);
-void GameLoop();
+void CreateEnemies();
+
+//Global variables
+const int imageSize = 64;
+const sf::Vector2f ScreenSize = { imageSize * 15, imageSize * 8 };
+const std::string saveFileName = "SaveFile.txt";
+E_GameState gameState = E_InGame; 
+
+std::vector<Enemy_BluePig*> BluePigsInMap;
+
 int main()
 {
 
-	GameLoop();
+	//INITIALIZE
 
-	return 0;
-}
-
-void SaveFile(Player &ent)
-{
-	std::ofstream myfile;
-	myfile.open("SaveFile.txt");
-
-	myfile << ent.getSprite().getPosition().x << std::endl;
-
-	myfile << ent.getSprite().getPosition().y << std::endl;
-
-	myfile << ent.getRoomId() << std::endl;
-
-	myfile.close();
-}
-
-void ChecIfPlayedBefore(Player & ent, sf::View &view)
-{
-	std::ifstream myfile("SaveFile.txt");
-	
-	bool fileFound = false; 
-
-	//Initialize screen variables
-	const int imageSize = 64;
-	const sf::Vector2f ScreenSize = { imageSize * 15, imageSize * 8 };
-
-	std::vector<std::string> allInfo;
-	std::string line;
-	if (myfile.is_open())
-	{
-		while (std::getline(myfile, line))
-		{
-			allInfo.push_back(line);
-		}
-		fileFound = true; 
-	}
-	myfile.close();
-
-	if (fileFound == true)
-	{
-
-		float PosX = 0;
-		float PosY = 0;
-		int id = 0;
-		for (int i = 0; i < allInfo.size(); ++i)
-		{
-			switch (i)
-			{
-				//Position X player
-			case 0:
-				PosX = std::stof(allInfo[i]);
-				break;
-			case 1:
-				PosY = std::stof(allInfo[i]);
-				break;
-			case 2:
-				ent.SetRoomId(std::stoi(allInfo[i]));
-				break;
-			}
-		}
-
-
-
-
-		ent.getSprite().setPosition(PosX, PosY);
-
-		if (ent.getRoomId() == 0)
-		{
-			view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
-		}
-		else if (ent.getRoomId() == 1)
-		{
-			view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2 + imageSize);
-
-		}
-		else if (ent.getRoomId() == 2)
-		{
-			view.setCenter(ScreenSize.x / 2, ScreenSize.y / 2);
-		}
-		else if (ent.getRoomId() == 3)
-		{
-			view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
-		}
-		else if (ent.getRoomId() == 4)
-		{
-			view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2 + imageSize);
-		}
-		else if (ent.getRoomId() == 5)
-		{
-			view.setCenter(ScreenSize.x / 2, ScreenSize.y / 2 + imageSize);
-		}
-		else if (ent.getRoomId() == 6)
-		{
-			view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
-		}
-
-
-	}
-	else
-	{
-		ent.getSprite().setPosition(ScreenSize.x/2, ScreenSize.y/2);
-	}
-}
-
-void GameLoop()
-{
-	//Create the map
-	Map map;
-
-	//Initialize screen variables
-	const int imageSize = 64;
-	const sf::Vector2f ScreenSize = { imageSize * 15, imageSize * 8 };
-	bool mainMenu = true; 
-	bool newGame = false; 
-	bool continueGame = false; 
-	
 	//UI STUFF
-	MainMenu mainMenuObj(ScreenSize);
+	MainMenu mainMenuObj(ScreenSize, saveFileName);
 	VictoryScreen victorySreen(ScreenSize);
+	sf::Text lifes; 
+	sf::Font font;
+	if (!font.loadFromFile("Fonts/VisualMagnets.ttf"))
+		std::cout << "\nFormalart.ttf cauldn't load corretly";
+	else
+		lifes.setFont(font);
+
+	lifes.setFillColor(sf::Color::White);
+	//lifes.setStyle(sf::Text::Bold | sf::Text::Underlined);
+	lifes.setCharacterSize(24);
+	
+	//MAP
+	Map map;
 
 	//View
 	sf::View view(sf::Vector2f((ScreenSize.x / 2) + imageSize, ScreenSize.y / 2), sf::Vector2f(ScreenSize.x, ScreenSize.y));
 
-	//Music
+	//SOUND
 	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
-	GraphicsUtils::playSound(sound,soundBuffer,"Music/MainMenu.wav",50,true);
+
+	sf::Sound MainMenuSound;
+	sf::Sound DungeonsSound;
+	sf::Sound VictorySound;
 
 	//Create the player
-	Player ent(ScreenSize);
+	Player player(ScreenSize);
+	std::string lifesS = "Lifes " + std::to_string(player.getLifes());
+	
+	lifes.setString(std::to_string(player.getLifes()));
+	lifes.setPosition(ScreenSize.x - ScreenSize.x/20, ScreenSize.y/20);
 
 	//Create Winning Item
 	VictoryItem victoryItem(ScreenSize);
@@ -157,134 +66,174 @@ void GameLoop()
 	//Create the window
 	sf::RenderWindow window(sf::VideoMode(ScreenSize.x, ScreenSize.y), "SFML Game!");
 
-	sf::RectangleShape rect(sf::Vector2f(10, 10));
-	rect.setFillColor(sf::Color::Transparent);
+	//SAVING SYSTEM
+	SavingSystem SaveFile;
 
-	bool changeMusicMenu = false; 
+	CreateEnemies();
 
 	//While window is open
 	while (window.isOpen())
 	{
-
-		//MAIN MENU
-		while (mainMenu == true)
+		switch (gameState)
 		{
+			//InMainMenu
+		case E_MainMenu:
 
-			sf::Event event;
-			while (window.pollEvent(event))
+			if (MainMenuSound.getStatus() != MainMenuSound.Playing)
 			{
-				if (event.type == sf::Event::Closed)
-				{
-					SaveFile(ent);
-
-					window.close();
-				}
-
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				{
-					//Move rect on mouse click for checking button pressed
-					sf::Vector2i getMousePosition = sf::Mouse::getPosition(window);
-					rect.setPosition(sf::Vector2f(getMousePosition));
-					//Play Button
-					if (rect.getGlobalBounds().intersects(mainMenuObj.getPlayBtn().getGlobalBounds()))
-					{
-						std::cout << "\New Game Btn Pressed";
-						newGame = true; 
-						mainMenu = false;
-						ent.SetRoomId(0);
-						ent.getSprite().setPosition(ScreenSize.x / 2, ScreenSize.y / 2);
-						view.setCenter(ScreenSize.x / 2 + imageSize, ScreenSize.y / 2);
-						//change music ingame
-						changeMusicMenu = true; 
-					}
-					if (rect.getGlobalBounds().intersects(mainMenuObj.getContinueBtn().getGlobalBounds()))
-					{
-						std::cout << "\nContinue Btn Pressed";
-						mainMenu = false; 
-						//Check if game was played before
-						ChecIfPlayedBefore(ent, view);
-						//change music ingame
-						changeMusicMenu = true;
-					}
-					if (rect.getGlobalBounds().intersects(mainMenuObj.getExitBtn().getGlobalBounds()))
-					{
-						std::cout << "\Exit Btn Pressed";
-						mainMenu = false;
-						//stop music
-						sound.stop();
-						window.close();
-					}
-					
-				}
+				GraphicsUtils::playSound(MainMenuSound, soundBuffer, "Music/MainMenu.wav", 50, true);
 			}
+			//Handle all input mouse could do
+			mainMenuObj.MouseInput(window, player, view, gameState);
 
 			window.clear();
 			mainMenuObj.DrawMainMenu(window);
-			window.draw(rect);
 			window.display();
-		}
+			break;
 
-		if (changeMusicMenu == true)
-		{
-			GraphicsUtils::playSound(sound, soundBuffer, "Music/Dungeon.wav",20,true);
-			changeMusicMenu = false; 
-		}
+			//InGame
+		case E_InGame:
 
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
+			//Player ingame logic
+			if (MainMenuSound.getStatus() == MainMenuSound.Playing)
 			{
-				SaveFile(ent);
-
-				window.close();
+				MainMenuSound.stop();
+				GraphicsUtils::playSound(DungeonsSound, soundBuffer, "Music/Dungeon.wav", 50, true);
 			}
-		}
 
-		//Player functionality
-		ent.PlayerFunctionality(event, map);
-
-		map.CheckPlayerCollisions(ent, view,victoryItem);
-
-		//Window draw stuff
-		window.clear();
-		map.DrawRooms(window, ent);
-		window.setView(view);
-		//If have the same id
-		if (ent.getRoomId() == victoryItem.getRoomSpawnedId())
-		{
-			window.draw(victoryItem.getSprite());
-		}
-		ent.drawPlayer(window);
-		window.display();
-
-
-		while (ent.PlayerWonTheGame == true)
-		{
 			sf::Event event;
-			sf::View view(sf::Vector2f(ScreenSize.x/2, ScreenSize.y/2), sf::Vector2f(ScreenSize.x, ScreenSize.y));
 			while (window.pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed)
 				{
-					SaveFile(ent);
-					ent.PlayerWonTheGame = false;
+					SaveFile.SaveGame(player);
 					window.close();
-					
-				}
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-				{
-					ent.PlayerWonTheGame = false;
-					SaveFile(ent);
-					mainMenu = true; 
 				}
 			}
 
-			window.setView(view);
-			window.clear();
-			victorySreen.DrawVictoryScreen(window);
+			//Player functionality
+			player.PlayerFunctionality(event, map);
+
+			//Map check collisions
+			map.CheckPlayerCollisions(player, view, victoryItem, gameState);
+
 			
+			{
+				sf::Vector2f lifePositionText = { player.getSprite().getPosition().x,player.getSprite().getPosition().y - (GraphicsUtils::spriteSize(player.getSprite()).y) };
+				lifes.setPosition(lifePositionText);
+			}
+
+			//Window draw stuff
+			window.clear();
+			map.DrawRooms(window, player);
+			window.setView(view);
+
+			//If have the same id
+			if (player.getRoomId() == victoryItem.getRoomSpawnedId())
+				window.draw(victoryItem.getSprite());
+			
+			//Draw BluePigs
+			for(auto &BluePig : BluePigsInMap)
+			{
+				if (BluePig->getRoomSpawnedId() == player.getRoomId())
+				{
+					BluePig->EnemyMovement(map, player);
+					window.draw(BluePig->getSprite());
+				}
+			}
+
+			player.drawPlayer(window);
+			window.draw(lifes);
 			window.display();
+			break;
+		
+			//If player wins the game
+		case E_Victory:
+		{
+			sf::View viewa(sf::Vector2f((ScreenSize.x / 2), ScreenSize.y / 2), sf::Vector2f(ScreenSize.x, ScreenSize.y));
+			window.setView(viewa);
+		}
+		while (window.pollEvent(event))
+		{
+			if (DungeonsSound.getStatus() == DungeonsSound.Playing)
+			{
+				DungeonsSound.stop();
+				GraphicsUtils::playSound(VictorySound, soundBuffer, "Music/Victory.wav", 70, false);
+			}
+
+			if (event.type == sf::Event::Closed)
+			{
+				player.PlayerWonTheGame = false;
+				window.close();
+			}
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				SaveFile.SaveGame(player);
+				gameState = E_MainMenu;
+			}
+		}
+		window.clear();
+		victorySreen.DrawVictoryScreen(window);
+
+		window.display();
+		break;
+
+		case E_GameOver:
+			break;
 		}
 	}
+	return 0;
+}
+
+void CreateEnemies()
+{
+//CREATE BLUE PIGS
+
+	//ROOM ID 1
+	Enemy_BluePig *Pig1 = new Enemy_BluePig(0, 1, sf::Vector2f(ScreenSize.x / 1.3f, 250), 1);
+	Enemy_BluePig *Pig2 = new Enemy_BluePig(0, 1, sf::Vector2f(ScreenSize.x / 2.2f, 150), 1);
+	Enemy_BluePig *Pig3 = new Enemy_BluePig(1, 0, sf::Vector2f(ScreenSize.x / 2.2f, 280), 1);
+
+	//ROOM ID 2
+	Enemy_BluePig *Pig4 = new Enemy_BluePig(-1, 0, sf::Vector2f(570, 330), 2);
+	Enemy_BluePig *Pig13 = new Enemy_BluePig(0, 1, sf::Vector2f(460, 220), 2);
+	Enemy_BluePig *Pig14 = new Enemy_BluePig(0, 1, sf::Vector2f(265, 380), 2);
+
+	//ROOM ID 3
+	Enemy_BluePig *Pig5 = new Enemy_BluePig(1, 0, sf::Vector2f(260, 140), 3);
+	Enemy_BluePig *Pig6 = new Enemy_BluePig(0, -1, sf::Vector2f(520, 150), 3);
+	Enemy_BluePig *Pig7 = new Enemy_BluePig(0, -1, sf::Vector2f(720, 400), 3);
+
+	//ROOM ID 4
+	Enemy_BluePig *Pig8 = new Enemy_BluePig(1, 0, sf::Vector2f(755, 200), 4);
+	Enemy_BluePig *Pig9 = new Enemy_BluePig(0, 1, sf::Vector2f(650, 300), 4);
+	Enemy_BluePig *Pig10 = new Enemy_BluePig(0, -1, sf::Vector2f(265, 350), 4);
+
+	//ROOM ID 6
+	Enemy_BluePig *Pig15 = new Enemy_BluePig(0, 1, sf::Vector2f(270, 410), 5);
+	Enemy_BluePig *Pig16 = new Enemy_BluePig(0, 1, sf::Vector2f(270, 150), 5);
+	Enemy_BluePig *Pig17 = new Enemy_BluePig(0, 1, sf::Vector2f(650, 310), 5);
+	Enemy_BluePig *Pig18 = new Enemy_BluePig(0, 1, sf::Vector2f(270, 150), 5);
+
+	//ROOM ID 6
+	Enemy_BluePig *Pig11 = new Enemy_BluePig(1, 1, sf::Vector2f(610, 225), 6);
+	Enemy_BluePig *Pig12 = new Enemy_BluePig(1, 1, sf::Vector2f(410, 225), 6);
+
+	BluePigsInMap.push_back(Pig1);
+	BluePigsInMap.push_back(Pig2);
+	BluePigsInMap.push_back(Pig3);
+	BluePigsInMap.push_back(Pig4);
+	BluePigsInMap.push_back(Pig5);
+	BluePigsInMap.push_back(Pig6);
+	BluePigsInMap.push_back(Pig7);
+	BluePigsInMap.push_back(Pig8);
+	BluePigsInMap.push_back(Pig9);
+	BluePigsInMap.push_back(Pig10);
+	BluePigsInMap.push_back(Pig11);
+	BluePigsInMap.push_back(Pig12);
+	BluePigsInMap.push_back(Pig13);
+	BluePigsInMap.push_back(Pig14);
+	BluePigsInMap.push_back(Pig15);
+	BluePigsInMap.push_back(Pig16);
+	BluePigsInMap.push_back(Pig17);
 }
